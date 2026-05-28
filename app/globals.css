@@ -1,26 +1,38 @@
 @import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer utilities {
+  .font-unbounded {
+    font-family: var(--font-unbounded);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .font-sen {
+    font-family: var(--font-sen);
   }
 }
 
+@theme {
+  --color--prim: #ff8b5c;
+  --color-prim-dark: #ff784b;
+  --color-secondary: #fbdf58;
+  --color-secondary-dark: #e5b718;
+  --color-gray-light: #f1f1f1;
+
+  --color-grident-bg: linear-gradient(
+    95deg,
+    rgba(255, 105, 78, 1),
+    rgba(255, 121, 92, 1) 100%
+  );
+
+  /* Font Family  */
+  --font-unbounded: var(--font-unbounded);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sen);
+  position: relative;
 }
