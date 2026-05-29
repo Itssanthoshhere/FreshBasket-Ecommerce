@@ -23,7 +23,7 @@ export default function Sidebar({
       >
         <div className="uppercase text-md  bg-gray-light flex justify-between items-center font-medium p-4">
           Menu
-          <button onClick={onClose}>
+          <button onClick={onClose} aria-label="Close menu">
             <Icon icon="material-symbols-light:close" width={24} height={24} />
           </button>
         </div>
