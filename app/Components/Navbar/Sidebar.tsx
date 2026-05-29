@@ -43,7 +43,7 @@ export default function Sidebar({
               href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md hover:text-prim transition-colors duration-300 cursor-pointer font-medium"
             >
-              Home
+              Shop
             </Link>
           </li>
 
