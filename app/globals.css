@@ -16,7 +16,7 @@
 }
 
 @theme {
-  --color--prim: #ff8b5c;
+  --color-prim: #ff8b5c;
   --color-prim-dark: #ff784b;
   --color-secondary: #fbdf58;
   --color-secondary-dark: #e5b718;
@@ -35,4 +35,17 @@
 body {
   font-family: var(--font-sen);
   position: relative;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.marquee {
+  animation: marquee 20s linear infinite;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sen, Unbounded } from "next/font/google";
 import "./globals.css";
+import Navbar from "./Components/Navbar/Navbar";
 
 const sen = Sen({
   variable: "--font-sen",
@@ -15,9 +16,9 @@ const unbounded = Unbounded({
 });
 
 export const metadata: Metadata = {
-  title: "FreshBite E-commerce Website",
+  title: "FreshBasket E-commerce Website",
   description:
-    "FreshBite is an e-commerce website that offers a wide range of fresh and delicious food products.",
+    "FreshBasket – A modern and responsive grocery e-commerce website built with Next.js, TypeScript, and Tailwind CSS, featuring product browsing, shopping cart functionality, wishlist management, responsive navigation, and a seamless shopping experience.",
 };
 
 export default function RootLayout({
@@ -30,7 +31,10 @@ export default function RootLayout({
       lang="en"
       className={`${sen.variable} ${unbounded.variable} h-full antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
