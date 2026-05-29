@@ -63,7 +63,7 @@ export default function Navmiddel() {
 
         <form
           onSubmit={(e) => e.preventDefault()}
-          className="hidden lg:flex items-center w-full. rounded-sm overflow-hidden max-w-xl bg-white border border-gray-200 relative"
+          className="hidden lg:flex items-center w-full rounded-sm overflow-hidden max-w-xl bg-white border border-gray-200 relative"
         >
           <span className="ps-4 text-gray-500">
             <Icon icon="iconamoon:search-thin" width={20} height={20} />
