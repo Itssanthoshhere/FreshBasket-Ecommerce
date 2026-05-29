@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sen, Unbounded } from "next/font/google";
 import "./globals.css";
+import Navbar from "./Components/Navbar/Navbar";
 
 const sen = Sen({
   variable: "--font-sen",
@@ -30,7 +31,10 @@ export default function RootLayout({
       lang="en"
       className={`${sen.variable} ${unbounded.variable} h-full antialiased`}
     >
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

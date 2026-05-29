@@ -36,6 +36,7 @@ npm i swiper
 npm i aos
 npm i yet-another-react-lightbox
 npm i bootstrap-icons
+npm i @iconify/react
 ```
 
 ---
