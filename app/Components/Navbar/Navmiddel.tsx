@@ -58,7 +58,7 @@ export default function Navmiddel() {
           href="/"
           className="logo font-unbounded text-xl sm:text-2xl cursor-pointer"
         >
-          Fresh<span className="text-prim">Bite</span>
+          Fresh<span className="text-prim">Basket</span>
         </Link>
 
         <form
