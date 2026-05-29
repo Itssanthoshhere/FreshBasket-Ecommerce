@@ -131,7 +131,7 @@ export default function Navmiddel() {
         <Sidebar open={openMenu} onClose={() => setOpenMenu(false)} />
 
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop:blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
             <div className="relative bg-white border border-white/10 rounded-xl p-10 w-112.5 md:w-125 shadow-2xl animate-fadeIn">
               <button
                 className="absolute top-5 right-5 text-4xl cursor-pointer hover:text-(--prim) transition-all"
