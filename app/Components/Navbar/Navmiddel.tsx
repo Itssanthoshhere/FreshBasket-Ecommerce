@@ -134,7 +134,7 @@ export default function Navmiddel() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
             <div className="relative bg-white border border-white/10 rounded-xl p-10 w-112.5 md:w-125 shadow-2xl animate-fadeIn">
               <button
-                className="absolute top-5 right-5 text-4xl cursor-pointer hover:text-(--prim) transition-all"
+                className="absolute top-5 right-5 text-4xl cursor-pointer hover:text-prim transition-all"
                 onClick={() => setShowModal(false)}
               >
                 <Icon
@@ -153,7 +153,7 @@ export default function Navmiddel() {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-(--prim)"
+                    className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-prim"
                     required
                   />
                 )}
@@ -161,14 +161,14 @@ export default function Navmiddel() {
                 <input
                   type="email"
                   placeholder="Email Address"
-                  className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-(--prim)"
+                  className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-prim"
                   required
                 />
 
                 <input
                   type="password"
                   placeholder="Password"
-                  className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-(--prim)"
+                  className="w-full bg-gray-200 border border-white/10 px-4 py-3 rounded-xl focus:outline-none focus:border-prim"
                   required
                 />
 
