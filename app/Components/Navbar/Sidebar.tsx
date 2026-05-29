@@ -127,7 +127,7 @@ export default function Sidebar({
         <ul>
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Milk and dairy products
@@ -136,7 +136,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Vegetable and fruits
@@ -145,7 +145,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Breakfast and cereals
@@ -154,7 +154,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Animal biscuits and products
@@ -163,7 +163,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Bread, toast and biscuits
@@ -172,7 +172,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Chicken, meat and Fish
@@ -181,7 +181,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Vitamins and minerals
@@ -190,7 +190,7 @@ export default function Sidebar({
 
           <li>
             <Link
-              href="/app/UI-Components/Pages/Shop"
+              href="/UI-Components/Pages/Shop"
               className="p-4 block border-b border-b-gray-100 text-md font-medium hover:text-prim transition-colors duration-300 cursor-pointer"
             >
               Ice cream and cold drink
