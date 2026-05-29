@@ -149,7 +149,7 @@ export default function Navmiddel() {
               </h2>
 
               <form className="flex flex-col gap-4">
-                {isLogin && (
+                {!isLogin && (
                   <input
                     type="text"
                     placeholder="Full Name"
