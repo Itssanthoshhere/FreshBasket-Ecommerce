@@ -119,11 +119,9 @@ export default function Navmiddel() {
               className="lg:bg-gray-light lg:w-12 lg:h-12 rounded-full flex justify-center items-center cursor-pointer lg:border border-gray-300 relative"
             >
               <Icon icon="lucide:shopping-bag" width={24} height={24} />
-              {cartCount > 0 && (
-                <span className="bg-prim absolute -top-1 -right-1 font-unbounded w-5 h-5 flex justify-center items-center text-sm rounded-full text-white">
-                  {cartCount}
-                </span>
-              )}
+              <span className="bg-prim absolute -top-1 -right-1 font-unbounded w-5 h-5 flex justify-center items-center text-sm rounded-full text-white">
+                {cartCount}
+              </span>
             </button>
           </li>
         </ul>
