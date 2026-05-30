@@ -49,3 +49,7 @@ body {
 .marquee {
   animation: marquee 20s linear infinite;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
