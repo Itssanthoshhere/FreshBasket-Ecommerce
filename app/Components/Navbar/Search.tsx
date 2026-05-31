@@ -118,6 +118,7 @@ export default function Search({ searchTerm, onClose }: Props) {
     }
 
     const basePrice = getPriceNumber(product.price);
+    const selectedQty = qty[product.id] || 1;
 
     let multiplier = 1;
     if (weight === "2kg") multiplier = 2;
@@ -129,7 +130,7 @@ export default function Search({ searchTerm, onClose }: Props) {
       {
         ...product,
         weight,
-        qty: 1,
+        qty: selectedQty,
         priceNumber: basePrice * multiplier,
       },
     ];
