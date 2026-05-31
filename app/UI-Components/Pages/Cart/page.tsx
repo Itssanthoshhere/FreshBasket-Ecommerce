@@ -371,7 +371,9 @@ export default function CartSidebar() {
           </div>
 
           <div
-            className={`transition-all duration-300 overflow-hidden max-h-40 opacity-100`}
+            className={`transition-all duration-300 overflow-hidden ${
+              openNote ? "max-h-40 opacity-100 mt-2" : "max-h-0 opacity-0"
+            }`}
           >
             <textarea
               className="border border-gray-200 w-full p-4 mt-2 rounded"
