@@ -31,16 +31,6 @@ export default function Checkout() {
 
     loadCart();
 
-  useEffect(() => {
-    const loadCart = () => {
-      const stored: CartItem[] = JSON.parse(
-        localStorage.getItem("cart") || "[]",
-      );
-      setCartItem(stored);
-    };
-
-    loadCart();
-
     window.addEventListener("cart-updated", loadCart);
     return () => window.removeEventListener("cart-updated", loadCart);
   }, []);
