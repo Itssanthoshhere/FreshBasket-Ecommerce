@@ -57,3 +57,49 @@ body {
 .banner-item {
   background: var(--color-grident-bg);
 }
+
+.ship-probar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  animation: 5s linear infinite bar-progress;
+  background-size: 1rem 1rem;
+  background-image: linear-gradient(
+    135deg,
+    `#ffffff26` 0 25%,
+    `#fff0` 25% 50%,
+    `#ffffff26` 50% 75%,
+    `#fff0` 75% 100%
+  );
+  width: 100%;
+  border-radius: 5px;
+  background-color: var(--color-prim);
+}
+
+@keyframes bar-progress {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -60px -60px;
+  }
+}
+
+.ship-probar svg {
+  position: absolute;
+  right: 0;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  padding: 5px !important;
+  bottom: 50%;
+  transform: translateY(50%);
+  color: #fff;
+  border-radius: 50%;
+  background: var(--color-prim);
+}
