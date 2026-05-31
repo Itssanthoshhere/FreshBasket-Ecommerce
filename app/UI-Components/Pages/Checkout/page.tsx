@@ -87,6 +87,7 @@ export default function Checkout() {
     );
     setCartItem(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
+    window.dispatchEvent(new Event("cart-updated"));
   };
 
   return (
