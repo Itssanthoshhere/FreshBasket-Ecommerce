@@ -53,3 +53,7 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none !important;
 }
+
+.banner-item {
+  background: var(--color-grident-bg);
+}

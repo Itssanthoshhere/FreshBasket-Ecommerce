@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Sidebar from "./Sidebar";
+import Search from "./Search";
 
 export default function Navmiddel() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -127,6 +128,10 @@ export default function Navmiddel() {
         </ul>
 
         <Sidebar open={openMenu} onClose={() => setOpenMenu(false)} />
+
+        {searchTerm && (
+          <Search searchTerm={searchTerm} onClose={() => setSearchTerm("")} />
+        )}
 
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
