@@ -55,11 +55,10 @@ export default function Search({ searchTerm, onClose }: Props) {
       ) {
         onClose();
       }
-
-      document.addEventListener("mousedown", handleClickOutSide);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutSide);
     };
+    document.addEventListener("mousedown", handleClickOutSide);
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutSide);
   }, [onClose]);
 
   const weights = ["1kg", "2kg", "3kg", "5kg"];
