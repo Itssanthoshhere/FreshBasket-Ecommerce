@@ -3,6 +3,7 @@ import Category from "./Category/page";
 import TopSelling from "./TopSelling/page";
 
 import products from "@/app/JsonData/TopSelling.json";
+import Offers from "./Offers/page";
 
 export default function Index() {
   return (
@@ -10,6 +11,7 @@ export default function Index() {
       <Hero />
       <Category />
       <TopSelling product={products} />
+      <Offers />
     </>
   );
 }
