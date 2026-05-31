@@ -35,6 +35,7 @@ export interface CartProduct extends Product {
   weight: string;
   qty: number;
   priceNumber: number;
+  image: string;
 }
 
 export default function CartSidebar() {
@@ -94,6 +95,10 @@ export default function CartSidebar() {
       (item) => item.id === product.id && item.weight === weight,
     );
 
+    const imageSrc = product.image1
+      ? `/${product.image1.replace(/^\/?/, "")}`
+      : "/placeholder.png";
+
     if (exists) {
       toast("Already in Cart 🛒");
       return;
@@ -111,6 +116,7 @@ export default function CartSidebar() {
       {
         ...product,
         weight,
+        image: imageSrc,
         qty: 1,
         priceNumber: basePrice * multiplier,
       },
