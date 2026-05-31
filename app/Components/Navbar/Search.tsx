@@ -151,9 +151,12 @@ export default function Search({ searchTerm, onClose }: Props) {
     "5 KG": "8,500.00",
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const filteredProducts = normalizedSearchTerm
+    ? products.filter((product) =>
+        product.title.toLowerCase().includes(normalizedSearchTerm),
+      )
+    : [];
 
   // Sub Total
   const getPriceNumber = (price?: string) => {
