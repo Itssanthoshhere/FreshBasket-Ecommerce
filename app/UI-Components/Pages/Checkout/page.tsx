@@ -284,10 +284,10 @@ export default function Checkout() {
                       />
 
                       <div className="grow">
-                        <h6 className="font-medium">Natural avocado</h6>
+                        <h6 className="font-medium">{item.title}</h6>
 
                         <p className="text-sm text-gray-500">
-                          Size: <strong>{item.weight}</strong> × 1
+                          Size: <strong>{item.weight}</strong> × {item.qty}
                         </p>
 
                         <p className="font-semibold">
