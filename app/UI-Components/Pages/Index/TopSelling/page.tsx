@@ -20,7 +20,7 @@ export interface Product {
   image5?: string;
   title: string;
   price: string;
-  lessPrice?: number;
+  lessprice?: string;
   review?: string;
   offer?: string;
   megasale?: string;
