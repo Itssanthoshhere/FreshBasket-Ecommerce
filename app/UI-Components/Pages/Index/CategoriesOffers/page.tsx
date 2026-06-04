@@ -18,13 +18,13 @@ const categories = [
     image: ctg1,
     title: "Dals and pulses",
     offer: "Min 20% Off",
-    desc: "Get over 20$ in saving",
+    desc: "Get over $20 in savings",
   },
   {
     image: ctg2,
     title: "Bakery Items",
     offer: "Min 10% off",
-    desc: "Get over 20$ in saving",
+    desc: "Get over $20 in savings",
   },
   {
     image: ctg3,
