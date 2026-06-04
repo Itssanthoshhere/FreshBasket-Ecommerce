@@ -1,16 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
-import products from "@/app/JsonData/TopSelling.json";
-import sectionbanner from "@/public/section-banner.png";
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Thumbs } from "swiper/modules";
 
-type Props = {
-  searchTerm: string;
-  onClose: () => void;
-};
+import "swiper/css";
+import "swiper/css/navigation";
+
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import Link from "next/link";
+
+import organicProducts from "@/app/JsonData/OrganicProducts.json";
+import recentlyProducts from "@/app/JsonData/RecentlyProducts.json";
+import topProducts from "@/app/JsonData/TopProducts.json";
+import topSelling from "@/app/JsonData/TopSelling.json";
+import trendingProducts from "@/app/JsonData/TrendingProducts.json";
 
 export interface Product {
   id: string;
@@ -19,6 +28,7 @@ export interface Product {
   image3?: string;
   image4?: string;
   image5?: string;
+  image6?: string;
   title: string;
   price: string;
   lessprice?: string;
@@ -27,6 +37,12 @@ export interface Product {
   megasale?: string;
   seller?: string;
   supersaver?: string;
+  mainImage1?: string;
+  mainImage2?: string;
+  mainImage3?: string;
+  mainImage4?: string;
+  mainImage5?: string;
+  mainImage6?: string;
   weight?: string;
   qty?: number;
 }
@@ -37,55 +53,43 @@ export interface CartProduct extends Product {
   priceNumber: number;
 }
 
-import toast, { Toaster } from "react-hot-toast";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Autoplay } from "swiper/modules";
-import { useRouter } from "next/navigation";
+const products: Product[] = [
+  ...organicProducts,
+  ...recentlyProducts,
+  ...topProducts,
+  ...topSelling,
+  ...trendingProducts,
+];
 
-export default function Wishlist({ searchTerm, onClose }: Props) {
-  const router = useRouter();
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [openModal, setOpenModal] = useState(false);
+export default function ProductDetails() {
+  const { id } = useParams();
+  const product = products.find(
+    (p) => p.id === (Array.isArray(id) ? id[0] : id),
+  );
   const [openId, setOpenId] = useState<string | null>(null);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cart, setCart] = useState<CartProduct[]>([]);
   const [selectedWeight, setSelectedWeight] = useState<{
     [key: string]: string;
   }>({});
-  const searchRef = useRef<HTMLDivElement>(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+  const [openModal, setOpenModal] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutSide = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutSide);
-    return () => document.removeEventListener("mousedown", handleClickOutSide);
-  }, [onClose]);
+  if (!product) return <div className="p-10 text-xl">Product not found</div>;
 
   const weights = ["1kg", "2kg", "3kg", "5kg"];
 
-  const [qty, setQty] = useState<Record<string, number>>({});
-
-  const increaseQty = (id: string) => {
-    setQty((prev) => ({
-      ...prev,
-      [id]: (prev[id] || 1) + 1,
-    }));
-  };
-
-  const decreaseQty = (id: string) => {
-    setQty((prev) => ({
-      ...prev,
-      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
-    }));
-  };
-
-  const [cart, setCart] = useState<CartProduct[]>([]);
+  const imagePairs = [
+    { thumb: product.image1, main: product.mainImage1 },
+    { thumb: product.image2, main: product.mainImage2 },
+    { thumb: product.image3, main: product.mainImage3 },
+    { thumb: product.image4, main: product.mainImage4 },
+    { thumb: product.image5, main: product.mainImage5 },
+    { thumb: product.image6, main: product.mainImage6 },
+  ].filter((pair) => pair.thumb && pair.main) as {
+    thumb: string;
+    main: string;
+  }[];
 
   useEffect(() => {
     const loadCart = () => {
@@ -110,61 +114,89 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
 
   const addToCart = (product: Product) => {
     const weight = selectedWeight[product.id] || "1kg";
+    const selectedQty = qty[product.id] || 1;
     const stored: CartProduct[] = JSON.parse(
       localStorage.getItem("cart") || "[]",
     );
 
-    const exists = stored.some(
-      (item) => item.id === product.id && item.weight === weight,
-    );
-
-    if (exists) {
-      toast("Already in Cart 🛒");
-      return;
-    }
-
     const basePrice = getPriceNumber(product.price);
-    const selectedQty = qty[product.id] || 1;
 
     let multiplier = 1;
     if (weight === "2kg") multiplier = 2;
     if (weight === "3kg") multiplier = 3;
     if (weight === "5kg") multiplier = 5;
 
-    const updated: CartProduct[] = [
-      ...stored,
-      {
+    const index = stored.findIndex((item) => item.id === product.id);
+
+    if (index !== -1) {
+      stored[index] = {
+        ...stored[index],
+        weight,
+        qty: (stored[index].qty || 1) + selectedQty,
+        priceNumber: basePrice * multiplier,
+      };
+
+      toast.success("Cart Product is Updated 🛒");
+    } else {
+      stored.push({
         ...product,
         weight,
         qty: selectedQty,
         priceNumber: basePrice * multiplier,
-      },
-    ];
+      });
 
-    localStorage.setItem("cart", JSON.stringify(updated));
+      toast.success(`${product.title} added to cart 🛒`);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(stored));
 
     window.dispatchEvent(new Event("cart-updated"));
     window.dispatchEvent(new Event("cart-open"));
 
     setIsCartOpen(true);
-    toast.success(`${product.title} added to cart 🛒`);
   };
 
-  const priceBySize: Record<string, string> = {
-    "1 KG": selectedProduct?.price || "0.00",
-    "2 KG": "3,800.00",
-    "3 KG": "5,400.00",
-    "5 KG": "8,500.00",
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggle = (index: number) => {
+    setOpenIndex((current) => (current === index ? null : index));
   };
 
-  const normalizedSearchTerm = (searchTerm || "").trim().toLowerCase();
-  const filteredProducts = normalizedSearchTerm
-    ? products.filter((product) =>
-        product.title.toLowerCase().includes(normalizedSearchTerm),
-      )
-    : [];
+  const [selectedSize, setSelectedSize] = useState("1 KG");
+  const [qty, setQty] = useState<Record<string, number>>({});
 
-  // Sub Total
+  const increaseQty = (id: string) => {
+    setQty((prev) => ({
+      ...prev,
+      [id]: (prev[id] || 1) + 1,
+    }));
+  };
+
+  const decreaseQty = (id: string) => {
+    setQty((prev) => ({
+      ...prev,
+      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
+    }));
+  };
+
+  const handleZoom = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const img = container.querySelector("img") as HTMLImageElement;
+
+    if (!img) return;
+
+    const rect = container.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    img.style.transformOrigin = `${x}% ${y}`;
+  };
+
+  const [open, setOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const lightboxImage = imagePairs.map((item) => ({ src: item.main }));
+
+  // Sub Total Calculation
   const getPriceNumber = (price?: string) => {
     if (!price) return 0;
 
@@ -178,355 +210,122 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
     return total + (item.priceNumber || 0) * (item.qty || 1);
   }, 0);
 
-  const [mainImage, setMainImage] = useState("");
-  const [selectedSize, setSelectedSize] = useState("1 KG");
-
-  useEffect(() => {
-    if (selectedProduct) {
-      setMainImage(selectedProduct.image1);
-      setSelectedSize("1 KG");
-    }
-  }, [selectedProduct]);
-
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (index: number) => {
-    setOpenIndex((current) => (current === index ? null : index));
-  };
-  const [wishlist, setWishlist] = useState<string[]>([]);
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      const stored: string[] = JSON.parse(
-        localStorage.getItem("wishlist") || "[]",
-      );
-      setWishlist(stored);
-    };
-
-    handleUpdate();
-    window.addEventListener("wishlistUpdated", handleUpdate);
-
-    return () => {
-      window.removeEventListener("wishlistUpdated", handleUpdate);
-    };
-  }, []);
-
-  const toggleWishlist = (product: Product) => {
-    const stored: string[] = JSON.parse(
-      localStorage.getItem("wishlist") || "[]",
-    );
-
-    let updated: string[];
-
-    if (stored.includes(product.id)) {
-      updated = stored.filter((id) => id !== product.id);
-
-      toast(`${product.title} Removed from wishlist 💔`);
-    } else {
-      updated = [...stored, product.id];
-      toast.success(`${product.title} Added to wishlist ❤️`);
-    }
-
-    localStorage.setItem("wishlist", JSON.stringify(updated));
-
-    setWishlist(updated);
-    window.dispatchEvent(new Event("wishlistUpdated"));
-  };
-
-  const wishlistProducts = products.filter((product) =>
-    wishlist.includes(product.id),
-  );
-
   return (
     <>
-      {/* Banner */}
-      <div className="page-banner bg-black h-55 flex justify-between items-center relative">
-        <Image
-          src={sectionbanner}
-          alt="sectionbanner"
-          className="w-full h-full object-cover absolute top-0 left-0 right-0"
-        />
-
-        <div className="content z-0 w-full h-full flex justify-center items-center flex-col">
-          <ul className="flex items-center gap-1">
-            <li>
-              <Link href="/" className="uppercase text-sm font-unbounded">
-                Home
-              </Link>
-            </li>
-            <li>-</li>
-            <li>
-              <Link
-                href="/UI-Components/Pages/Wishlist"
-                className="uppercase text-sm font-unbounded"
-              >
-                Wishlist
-              </Link>
-            </li>
-          </ul>
-
-          <h2 className="text-xl sm:text-3xl font-unbounded">Wishlist</h2>
-        </div>
-      </div>
-
-      {wishlistProducts.length === 0 && (
-        <div className="text-center py-20 text-gray-500">
-          ❤️ Your wishlist is empty
-        </div>
-      )}
-
-      {/* Grid */}
-      <div className="grid xxl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 px-2 lg:px-8 xl:px-12 py-12 relative gap-10">
-        {wishlistProducts.map((product) => (
-          <div key={product.id}>
-            <div className="group border border-gray-200 w-full rounded-lg bg-white relative hover:shadow-xl transition-all duration-500">
-              {(() => {
-                if (product.megasale) {
-                  return (
-                    <span className="absolute top-3 left-3 bg-red-600 text-white text-xs font-medium px-2 py-1 rounded z-10">
-                      {product.megasale}
-                    </span>
-                  );
-                }
-
-                if (product.offer) {
-                  return (
-                    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded z-10">
-                      {product.offer}
-                    </span>
-                  );
-                }
-
-                if (product.supersaver) {
-                  return (
-                    <span className="absolute top-3 left-3 bg-green-500 text-white text-xs font-medium px-2 py-1 rounded z-10">
-                      {product.supersaver}
-                    </span>
-                  );
-                }
-
-                if (product.seller) {
-                  return (
-                    <span className="absolute top-3 left-3 bg-secondary-dark text-white text-xs font-medium px-2 py-1 rounded z-10">
-                      {product.seller}
-                    </span>
-                  );
-                }
-
-                return null;
-              })()}
-
-              <div className="w-full h-62.5 relative rounded-lg overflow-hidden">
-                <img
-                  src={product.image1}
-                  alt={product.title}
-                  className="w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-all duration-500"
-                />
-
-                <img
-                  src={product.image2}
-                  alt={product.title}
-                  className="w-full h-full object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-all duration-500"
-                />
-
-                <div className="absolute border border-gray-200 rounded-sm top-0 right-0 m-3 transform translate-x-10 group-hover:translate-x-0 transition-all duration-500 opacity-0 group-hover:opacity-100">
-                  <Icon
-                    icon={
-                      wishlist.includes(product.id)
-                        ? "mdi:heart"
-                        : "line-md:heart"
-                    }
-                    width={30}
-                    height={30}
-                    onClick={() => toggleWishlist(product)}
-                    className={`border-b border-gray-200 p-1
-                             cursor-pointer transition-all duration-300 ease-in-out ${wishlist.includes(product.id) ? "text-red-600 scale-110" : "text-black scale-100"}`}
-                  />
-
-                  <Icon
-                    icon="iconamoon:eye-light"
-                    width={30}
-                    height={30}
-                    className="border-gray-200 p-1 cursor-pointer"
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setOpenModal(true);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="product-content p-5">
-                <button
-                  onClick={() => router.push(`/products/${product.id}`)}
-                  className="text-xl font-semibold mb-3 group-hover:text-prim duration-500 cursor-pointer"
+      <div className="px-4 lg:px-12px xl:px-[12%] py-8 sm:py-16 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div>
+            <div className="relative group">
+              <div className="relative group">
+                <Swiper
+                  modules={[Navigation, Thumbs]}
+                  thumbs={{ swiper: thumbsSwiper }}
+                  onBeforeInit={(swiper) => {
+                    // @ts-ignore
+                    swiper.params.navigation.prevEl = ".custom-prev";
+                    // @ts-ignore
+                    swiper.params.navigation.nextEl = ".custom-next";
+                  }}
+                  navigation
+                  className="border border-gray-200 rounded-md"
                 >
-                  {product.title}
+                  {imagePairs.map((item, i) => (
+                    <SwiperSlide key={i}>
+                      <div
+                        onClick={() => {
+                          setPhotoIndex(i);
+                          setOpen(true);
+                        }}
+                        className="zoom-container cursor-pointer aspect-square bg-whiteflex items-center justify-center"
+                        onMouseMove={handleZoom}
+                      >
+                        <Image
+                          src={item.main}
+                          alt={product.title}
+                          width={800}
+                          height={800}
+                          className="w-full h-full object-contain"
+                          priority
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+
+                <button className="custom-prev cursor-pointer absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full -translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <Icon
+                    icon="iconamoon:arrow-left-2-light"
+                    width={35}
+                    height={35}
+                  />
                 </button>
 
-                <div className="flex items-center justify-between mb-3 gap-3 relative">
-                  <div className="relative">
-                    <button
-                      onClick={() =>
-                        setOpenId(openId === product.id ? null : product.id)
-                      }
-                      className="border border-gray-200 rounded px-3 py-2 text-md flex items-center gap-2 w-full justify-between cursor-pointer"
-                    >
-                      {selectedWeight[product.id] || "1 kg"}
-
-                      <Icon
-                        icon="iconamoon:arrow-down-2-duotone"
-                        width={20}
-                        height={20}
-                        className={`transition-transform duration-300 ${openId === product.id ? "rotate-180" : ""}`}
-                      />
-                    </button>
-
-                    <ul
-                      className={`absolute left-0 top-full mt-1 w-full bg-white border border-gray-200 rounded z-10 transition-all duration-300 ease-in-out ${openId === product.id ? "opacity-100 translate-y-0 visible" : "opacity-0 -translate-y-2 invisible"}`}
-                    >
-                      {weights.map((item) => (
-                        <li
-                          key={item}
-                          onClick={() => {
-                            setSelectedWeight((prev) => ({
-                              ...prev,
-                              [product.id]: item,
-                            }));
-
-                            setOpenId(null);
-                          }}
-                          className="px-3 py-2 text-md cursor-pointer hover:bg-prim/10"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex items-center border border-gray-200 rounded">
-                    <button
-                      onClick={() => decreaseQty(product.id)}
-                      className="px-3 py-2 cursor-pointer"
-                    >
-                      <Icon icon="ic:baseline-minus" width={20} height={20} />
-                    </button>
-
-                    <span className="px-3 text-lg">{qty[product.id] || 1}</span>
-
-                    <button
-                      onClick={() => increaseQty(product.id)}
-                      className="px-3 py-2 cursor-pointer"
-                    >
-                      <Icon icon="ic:baseline-plus" width={20} height={20} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="font-semibold text-black text-md">
-                    {product.price}
-                  </span>
-
-                  <span className="line-through font-semibold text-black text-md">
-                    {product.lessprice}
-                  </span>
-
-                  {product.review && (
-                    <span className="ml-auto flex items-center bg-green-100 text-green-700 text-md px-3 py-1 rounded font-bold">
-                      <Icon
-                        icon="material-symbols:star-rounded"
-                        width={14}
-                        height={14}
-                        className="me-1"
-                      />
-                      {product.review}
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => addToCart(product)}
-                  className="w-full rounded py-2 font-semibold text-md bg-gray-light hover:bg-black transition-colors duration-300 hover:text-white cursor-pointer flex items-center justify-center"
-                >
-                  ADD TO CART
+                <button className="custom-next cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                   <Icon
-                    icon="lucide:shopping-bag"
-                    width={20}
-                    height={20}
-                    className="ms-1"
+                    icon="iconamoon:arrow-right-2-light"
+                    width={35}
+                    height={35}
                   />
                 </button>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* POPUP MODAL */}
-      <div
-        className={`fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm top-0 left-0 transition-opacity duration-300 ${openModal ? "opacity-100 visible" : "opacity-0 invisible"}`}
-      >
-        <div
-          className={`relative bg-white max-w-6xl w-full mx-4 rounded-sm p-5 lg:p-10 flex lg:flex-row flex-col overflow-y-auto max-h-175 gap-10 transform transition-all duration-300 ease-out ${openModal ? "scale-100 opacity-100" : "scale-90 opacity-0"}`}
-        >
-          <button
-            onClick={() => setOpenModal(false)}
-            className="absolute top-0 right-0 z-50 text-xl font-bold hover:bg-black cursor-pointer transition-colors duration-300 bg-prim-dark text-white p-2"
-          >
-            <Icon icon="material-symbols-light:close" width={24} height={24} />
-          </button>
-
-          <div className="w-full lg:w-1/2 h-full">
-            <div className="overflow-hidden border border-gray-200 rounded-sm">
-              {(mainImage || selectedProduct?.image1) && (
-                <Image
-                  src={mainImage || selectedProduct.image1}
-                  alt="Product"
-                  width={500}
-                  height={500}
-                  className="w-full h-112.5 lg:h-112.5 object-cover"
+              <button className="custom-prev cursor-pointer absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full -translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <Icon
+                  icon="iconamoon:arrow-left-2-light"
+                  width={35}
+                  height={35}
                 />
-              )}
+              </button>
+
+              <button className="custom-next cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <Icon
+                  icon="iconamoon:arrow-right-2-light"
+                  width={35}
+                  height={35}
+                />
+              </button>
             </div>
 
-            <div className="flex justify-between items-center overflow-x-auto gap-2 mt-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => {
-                const img = selectedProduct?.[`image${i}`];
-                if (!img) return null;
-
-                return (
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              spaceBetween={20}
+              slidesPerView={5}
+              watchSlidesProgress
+              className="mt-4"
+              breakpoints={{
+                1600: { slidesPerView: 5 },
+                1000: { slidesPerView: 4 },
+                500: { slidesPerView: 3 },
+                0: { slidesPerView: 2 },
+              }}
+            >
+              {imagePairs.map((item, i) => (
+                <SwiperSlide key={i}>
                   <Image
-                    key={`${selectedProduct?.id}-${i}`}
-                    src={img}
+                    src={item.thumb}
                     alt="thumb"
                     width={100}
                     height={100}
-                    className="border border-gray-200 rounded-sm cursor-pointer object-cover h-24 w-full"
-                    onClick={() => setMainImage(img)}
+                    className="border border-gray-200 rounded-md cursor-pointer object-contain h-30 w-full"
                   />
-                );
-              })}
-            </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
 
-          <div className="w-full lg:w-1/2 h-full lg:overflow-y-auto lg:h-150 hide-scrollbar">
-            <h3 className="text-2xl font-semibold mb-2">
-              {selectedProduct?.title}
-            </h3>
+          <div>
+            <h3 className="text-2xl font-semibold mb-2">{product.title}</h3>
 
             <p className="mb-3 text-gray-600">
               Tax included. Shipping calculated at checkout.
             </p>
 
             <div className="flex items-center gap-4 mb-4">
-              <div className="text-2xl font-bold">
-                Rs. {priceBySize[selectedSize].replace("Rs.", "").trim()}
-              </div>
+              <div className="text-2xl font-bold">{product.price}</div>
 
-              {selectedProduct?.lessprice && (
+              {product.lessprice && (
                 <div className="font-semibold line-through text-gray-500 text-md">
-                  Rs. {selectedProduct.lessprice.replace(/Rs\.?/i, "").trim()}
+                  Rs. {product.lessprice.replace(/Rs\.?/gi, "").trim()}
                 </div>
               )}
             </div>
@@ -548,7 +347,7 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                   cy="7.5"
                   r="5"
                   stroke="rgb(255, 255, 255)"
-                  strokeWidth="1"
+                  strokeWidth={1}
                   fill="rgb(62,214,96)"
                 ></circle>
               </svg>
@@ -561,54 +360,60 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
             </p>
 
             <div className="mb-4">
-              <strong>Size:</strong>
-              <span className="ml-2 text-sm font-medium text-gray-500">
-                {selectedSize}
-              </span>
+              <div className="flex items-center gap-2">
+                <strong>Size:</strong>
+                <span className="text-sm font-medium text-gray-500">
+                  {selectedWeight[product.id] || "1 KG"}
+                </span>
+              </div>
 
-              <ul className="flex gap-2 mt-3">
-                {["1 KG", "2 KG", "3 KG", "5 KG"].map((size) => (
-                  <li
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`border border-gray-200 rounded-sm px-4 py-1 cursor-pointer transition ${selectedSize === size ? "bg-black text-white" : "hover:bg-black hover:text-white"}`}
-                  >
-                    {size}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex items-center gap-2 mt-2">
+                <div className="flex gap-2">
+                  {weights.map((item) => (
+                    <button
+                      key={item}
+                      onClick={() =>
+                        setSelectedWeight((prev) => ({
+                          ...prev,
+                          [product.id]: item,
+                        }))
+                      }
+                      className={`px-3 py-1 text-sm border rounded transition-all cursor-pointer ${selectedWeight[product.id] === item ? "border-black text-black font-semibold" : " border-gray-300 text-gray-500 hover:border-black"}`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {selectedProduct && (
-              <div className="flex items-center border border-gray-200 rounded w-fit mb-5">
-                <button
-                  onClick={() => decreaseQty(selectedProduct.id)}
-                  className="px-3 py-2 cursor-pointer"
-                >
-                  <Icon icon="ic:baseline-minus" width={20} height={20} />
-                </button>
+            <div className="flex items-center border border-gray-200 rounded w-fit mb-5">
+              <button
+                onClick={() => decreaseQty(product.id)}
+                className="px-3 py-2 cursor-pointer"
+              >
+                <Icon icon="ic:baseline-minus" width={20} height={20} />
+              </button>
 
-                <span className="px-3 text-lg">
-                  {qty[selectedProduct.id] || 1}
-                </span>
+              <span className="px-3 text-lg">{qty[product.id] || 1}</span>
 
-                <button
-                  onClick={() => increaseQty(selectedProduct.id)}
-                  className="px-3 py-2 cursor-pointer"
-                >
-                  <Icon icon="ic:baseline-plus" width={20} height={20} />
-                </button>
-              </div>
-            )}
+              <button
+                onClick={() => increaseQty(product.id)}
+                className="px-3 py-2 cursor-pointer"
+              >
+                <Icon icon="ic:baseline-plus" width={20} height={20} />
+              </button>
+            </div>
 
             <div className="w-full flex flex-col sm:flex-row gap-3">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
 
-                  if (!selectedProduct) return;
+                  if (!product) return;
 
-                  addToCart(selectedProduct);
+                  addToCart(product);
+
                   window.dispatchEvent(new Event("cart-open"));
                   setOpenModal(false);
                 }}
@@ -617,16 +422,31 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                 ADD TO CART
               </button>
 
-              <button className="bg-black text-white px-6 py-3 rounded hover:bg-prim transition duration-300 w-full cursor-pointer text-center">
+              <button className="bg-black text-white px-6 py-3 rounded hover:bg-prim transition duration-300 w-full cursor-pointer">
                 BUY IT NOW
               </button>
             </div>
+
+            <ul className="pt-5 space-y-2">
+              <li>
+                <span>
+                  <strong>Delivery: </strong>Estimated delivery time: 5-7 days
+                </span>
+              </li>
+              <li>
+                <span>
+                  <strong>Returns: </strong>Within 45 days of purchase
+                </span>
+              </li>
+              <li>
+                <strong>Sku: </strong>445
+              </li>
+            </ul>
 
             <div className="py-5">
               <span className="text-xl font-medium">
                 Payment &amp; Security
               </span>
-
               <ul className="flex gap-2 items-center pt-2 cursor-pointer">
                 <li>
                   <svg
@@ -652,7 +472,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     ></path>
                   </svg>
                 </li>
-
                 <li>
                   <svg
                     viewBox="0 0 38 24"
@@ -679,7 +498,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     ></path>
                   </svg>
                 </li>
-
                 <li>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -725,7 +543,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     ></path>
                   </svg>
                 </li>
-
                 <li>
                   <svg
                     viewBox="0 0 38 24"
@@ -758,7 +575,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     ></path>
                   </svg>
                 </li>
-
                 <li>
                   <svg
                     viewBox="0 0 38 24"
@@ -783,7 +599,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     ></path>
                   </svg>
                 </li>
-
                 <li>
                   <svg
                     viewBox="0 0 38 24"
@@ -889,6 +704,110 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                 <h6 className="font-semibold text-md pt-2">Money back</h6>
               </li>
             </ul>
+
+            <div className="product">
+              <Swiper
+                spaceBetween={20}
+                slidesPerView={2}
+                breakpoints={{
+                  1600: { slidesPerView: 2 },
+                  1000: { slidesPerView: 1.5 },
+                  768: { slidesPerView: 2 },
+                  0: { slidesPerView: 1 },
+                }}
+              >
+                {organicProducts.slice(4, 9).map((product, index) => (
+                  <SwiperSlide key={`${product.id}-${index}`}>
+                    <div className="flex items-start h-full gap-5 cursor-pointer">
+                      <div className="w-36 h-36 group relative overflow-hidden">
+                        <img
+                          src={product.image1}
+                          alt={product.title}
+                          className="object-cover rounded h-full w-full"
+                        />
+
+                        <img
+                          src={product.image2}
+                          alt={product.title}
+                          className="w-full h-full object-cover absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-all duration-500"
+                        />
+                      </div>
+
+                      <div>
+                        <h3 className="text-md font-semibold hover:text-prim mb-1 duration-500">
+                          {product.title}
+                        </h3>
+
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-medium text-black text-sm">
+                            {product.price}
+                          </span>
+
+                          <span className="line-through font-semibold text-black text-sm">
+                            {product.lessprice}
+                          </span>
+                        </div>
+
+                        <ul className="flex items-center mb-3">
+                          <li className="text-yellow-400">
+                            <Icon
+                              icon="material-symbols:star-rounded"
+                              width={18}
+                              height={18}
+                            />
+                          </li>
+
+                          <li className="text-yellow-400">
+                            <Icon
+                              icon="material-symbols:star-rounded"
+                              width={18}
+                              height={18}
+                            />
+                          </li>
+
+                          <li className="text-yellow-400">
+                            <Icon
+                              icon="material-symbols:star-rounded"
+                              width={18}
+                              height={18}
+                            />
+                          </li>
+
+                          <li className="text-yellow-400">
+                            <Icon
+                              icon="material-symbols:star-rounded"
+                              width={18}
+                              height={18}
+                            />
+                          </li>
+
+                          <li className="text-yellow-400">
+                            <Icon
+                              icon="material-symbols:star-rounded"
+                              width={18}
+                              height={18}
+                            />
+                          </li>
+                        </ul>
+
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="rounded py-2 px-2 w-fit font-semibold text-xs bg-gray-light hover:bg-black transition-colors duration-300 mb-5 hover:text-white flex items-center"
+                        >
+                          ADD TO CART
+                          <Icon
+                            icon="lucide:shopping-bag"
+                            width={20}
+                            height={20}
+                            className="ms-1"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
 
             <div>
               {/* Offers */}
@@ -1013,7 +932,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
                     />
 
                     <span className="font-medium text-lg">
-                      {" "}
                       Flexible returns
                     </span>
                   </div>
@@ -1044,8 +962,6 @@ export default function Wishlist({ searchTerm, onClose }: Props) {
           </div>
         </div>
       </div>
-
-      <Toaster position="top-right" />
     </>
   );
 }
