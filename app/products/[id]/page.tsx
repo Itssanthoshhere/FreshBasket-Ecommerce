@@ -187,7 +187,7 @@ export default function ProductDetails() {
 
     const rect = container.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientX - rect.top) / rect.height) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
     img.style.transformOrigin = `${x}% ${y}`;
   };
