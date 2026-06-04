@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "bootstrap-icons/font/bootstrap-icons.css";
 
 * {
   box-sizing: border-box;
@@ -103,3 +102,18 @@ body {
   border-radius: 50%;
   background: var(--color-prim);
 }
+
+/* Offers Section  */
+
+.ctg-image {
+  margin: 50px 50px 50px 50px;
+  max-width: 200px;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.offer-swiper {
+  padding: 30px 0 !important;
+}
+
