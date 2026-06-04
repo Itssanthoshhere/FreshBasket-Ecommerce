@@ -114,6 +114,7 @@ export default function ProductDetails() {
 
   const addToCart = (product: Product) => {
     const weight = selectedWeight[product.id] || "1kg";
+    const selectedQty = qty[product.id] || 1;
     const stored: CartProduct[] = JSON.parse(
       localStorage.getItem("cart") || "[]",
     );
@@ -131,6 +132,7 @@ export default function ProductDetails() {
       stored[index] = {
         ...stored[index],
         weight,
+        qty: (stored[index].qty || 1) + selectedQty,
         priceNumber: basePrice * multiplier,
       };
 
@@ -139,7 +141,7 @@ export default function ProductDetails() {
       stored.push({
         ...product,
         weight,
-        qty: 1,
+        qty: selectedQty,
         priceNumber: basePrice * multiplier,
       });
 
