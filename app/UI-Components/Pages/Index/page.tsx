@@ -6,6 +6,7 @@ import products from "@/app/JsonData/TopSelling.json";
 import Offers from "./Offers/page";
 import CategoriesOffers from "./CategoriesOffers/page";
 import BannerOffers from "./BannerOffers/page";
+import OrganicProducts from "./OrganicProducts/page";
 
 export default function Index() {
   return (
@@ -16,6 +17,7 @@ export default function Index() {
       <Offers />
       <CategoriesOffers />
       <BannerOffers />
+      <OrganicProducts />
     </>
   );
 }
