@@ -261,7 +261,7 @@ export default function LatestProducts() {
               {TopProducts.slice(0, 3).map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center group gap-4 rounded-lg p-4 bg-white cursor-pointer"
+                  className="relative flex items-center group gap-4 rounded-lg p-4 bg-white cursor-pointer"
                 >
                   {(() => {
                     if (product.megasale) {
