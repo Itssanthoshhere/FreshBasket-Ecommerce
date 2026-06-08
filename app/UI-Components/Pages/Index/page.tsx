@@ -8,6 +8,7 @@ import CategoriesOffers from "./CategoriesOffers/page";
 import BannerOffers from "./BannerOffers/page";
 import OrganicProducts from "./OrganicProducts/page";
 import LatestProducts from "./LatestProducts/page";
+import Order from "./Order/page";
 
 export default function Index() {
   return (
@@ -20,6 +21,7 @@ export default function Index() {
       <BannerOffers />
       <OrganicProducts />
       <LatestProducts />
+      <Order />
     </>
   );
 }
