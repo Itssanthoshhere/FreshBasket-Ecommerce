@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import titleicon from "@/public/Freshbasket-title-icon3.webp";
+import titleicon from "@/public/freshbite-title-icon3.webp";
 
 import tst1 from "@/public/tst-img-01.webp";
 import tst2 from "@/public/tst-img-02.webp";
