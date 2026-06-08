@@ -39,7 +39,7 @@ const testimonials = [
   {
     img: tst4,
     name: "Rolly jonson",
-    role: "Grocery storer",
+    role: "Grocery store owner",
     text: "Freshbasket’s fast delivery and fresh selection make stocking the store easy and reliable every time.",
   },
 ];
