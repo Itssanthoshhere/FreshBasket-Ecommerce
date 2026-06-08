@@ -95,11 +95,16 @@ export default function Shop() {
     }
   }, [selectedProduct]);
 
-  const priceBySize: Record<string, string> = {
-    "1 KG": selectedProduct?.price || "0.00",
-    "2 KG": "3,800.00",
-    "3 KG": "5,400.00",
-    "5 KG": "8,500.00",
+  const basePriceStr = selectedProduct?.price || "";
+  const cleanedStr = basePriceStr.replace(/,/g, "").replace(/Rs\./g, "").trim();
+  const parsedPrice = parseFloat(cleanedStr);
+  const basePrice = isNaN(parsedPrice) ? 0 : parsedPrice;
+
+  const priceBySize: Record<string, number> = {
+    "1 KG": basePrice,
+    "2 KG": basePrice * 2,
+    "3 KG": basePrice * 3,
+    "5 KG": basePrice * 5,
   };
 
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -385,7 +390,7 @@ export default function Shop() {
               <div className="py-5">
                 <h2 className="font-semibold tracking-wide mb-4">Size</h2>
 
-                {["1kg", "2kg", "3kg", "4kg"].map((size) => (
+                {["1kg", "2kg", "3kg", "5kg"].map((size) => (
                   <label
                     key={size}
                     className="flex justify-between items-center cursor-pointer mb-3"
@@ -831,7 +836,7 @@ export default function Shop() {
 
             <div className="flex items-center gap-4 mb-4">
               <div className="text-2xl font-bold">
-                Rs. {priceBySize[selectedSize].replace("Rs.", "").trim()}
+                Rs. {(priceBySize[selectedSize] || 0).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
 
               {selectedProduct?.lessprice && (
