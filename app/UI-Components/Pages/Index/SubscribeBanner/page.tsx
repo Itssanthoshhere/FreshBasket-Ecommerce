@@ -1,4 +1,4 @@
-import subscribebanner from "@/public//freshbite-news-bg.webp";
+import subscribebanner from "`@/public/freshbite-news-bg.webp`";
 
 import { Icon } from "@iconify/react";
 import Image from "next/image";
