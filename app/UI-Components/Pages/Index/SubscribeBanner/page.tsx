@@ -10,7 +10,8 @@ export default function SubscribeBanner() {
         <div className="subscribe-banner relative py-18 px-8">
           <Image
             src={subscribebanner}
-            alt="sub-banner"
+            alt="Newsletter subscription background with fresh produce"
+            priority
             className="w-full h-full absolute top-0 left-0 object-cover"
           />
 
