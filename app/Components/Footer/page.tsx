@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <>
-      <div className="px-2 lg:px-8 xl:px-12 py-8 sm:py-16 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-10 bg-[url('/freshbite-footer-bg.webp')] bg-gray-light bg-contain bg-no-repeat bg-center">
+      <div className="px-2 lg:px-8 xl:px-12 py-8 sm:py-16 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-10 bg-[url(/freshbite-footer-bg.webp)] bg-gray-light bg-contain bg-no-repeat bg-center">
         <div className="footer-item">
           <Link
             href="/"
