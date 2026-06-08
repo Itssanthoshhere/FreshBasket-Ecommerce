@@ -40,7 +40,7 @@ const testimonials = [
     img: tst4,
     name: "Rolly jonson",
     role: "Grocery storer",
-    text: "I romanticized domesticity for a while, and loved having a shopping list of groceries stuck to the fridge for the first time.",
+    text: "Freshbasket’s fast delivery and fresh selection make stocking the store easy and reliable every time.",
   },
 ];
 
