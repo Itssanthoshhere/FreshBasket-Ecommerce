@@ -24,7 +24,10 @@ export default function SubscribeBanner() {
             </h2>
             <form className="flex items-center max-w-xl mx-auto bg-black rounded-sm overflow-hidden">
               <input
-                type="text"
+                type="email"
+                name="email"
+                aria-label="Email address for newsletter subscription"
+                required
                 placeholder="Enter Your Email"
                 className="bg-white w-full py-4 px-4 outline-none"
               />
