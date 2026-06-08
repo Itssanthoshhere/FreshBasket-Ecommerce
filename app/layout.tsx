@@ -4,6 +4,7 @@ import "./globals.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./Components/Navbar/Navbar";
 import CartSidebar from "./UI-Components/Pages/Cart/page";
+import Footer from "./Components/Footer/page";
 
 const sen = Sen({
   variable: "--font-sen",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <CartSidebar />
+        <Footer />
       </body>
     </html>
   );
