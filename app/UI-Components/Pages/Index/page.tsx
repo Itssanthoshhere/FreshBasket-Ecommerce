@@ -12,6 +12,7 @@ import Order from "./Order/page";
 import Brands from "./Brands/page";
 import Services from "./Services/page";
 import Testimonials from "./Testimonials/page";
+import SubscribeBanner from "./SubscribeBanner/page";
 
 export default function Index() {
   return (
@@ -28,6 +29,7 @@ export default function Index() {
       <Brands />
       <Services />
       <Testimonials />
+      <SubscribeBanner />
     </>
   );
 }
