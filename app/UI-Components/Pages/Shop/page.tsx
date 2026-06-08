@@ -841,9 +841,6 @@ export default function Shop() {
               )}
             </div>
 
-            <span className="text-gray-500">
-              Tax included. Shipping calculated at checkout.
-            </span>
 
             <div className="flex items-center gap-2 border-b border-gray-200 pb-5 pt-2 mb-4">
               <svg width="15" height="15" aria-hidden="true">
