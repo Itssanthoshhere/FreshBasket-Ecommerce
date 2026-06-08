@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import titleicon from "@/public/freshbite-title-icon3.webp";
+import titleicon from "@/public/Freshbasket-title-icon3.webp";
 
 import tst1 from "@/public/tst-img-01.webp";
 import tst2 from "@/public/tst-img-02.webp";
@@ -22,7 +22,7 @@ const testimonials = [
     img: tst1,
     name: "Rosemary Dois",
     role: "Organic Farmer",
-    text: "Life is like waiting in line at the grocery store. You wait, you slowly move forward then you exit unsatisfied and broke.",
+    text: "Freshbasket delivers high-quality organic produce every time, and I trust their service for my farm-to-table needs.",
   },
   {
     img: tst2,
