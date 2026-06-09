@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "img": "/Blog-1.webp",
+    "title": "Top 10 Hidden Beaches You Must Visit This Summer",
+    "date": "03 Jan 2026",
+    "author": "Alex Carter",
+    "comments": "12 comments"
+  },
+  {
+    "id": 2,
+    "img": "/Blog-2.webp",
+    "title": "How AI is Changing the Future of Travel Planning",
+    "date": "18 Feb 2026",
+    "author": "Emma Wilson",
+    "comments": "8 comments"
+  },
+  {
+    "id": 3,
+    "img": "/Blog-3.webp",
+    "title": "Best Mountain Destinations for Adventure Lovers",
+    "date": "27 Mar 2026",
+    "author": "Daniel Lee",
+    "comments": "15 comments"
+  },
+  {
+    "id": 4,
+    "img": "/Blog-4.webp",
+    "title": "5 Budget-Friendly Countries Every Student Should Explore",
+    "date": "11 Apr 2026",
+    "author": "Sophia Miller",
+    "comments": "10 comments"
+  },
+  {
+    "id": 5,
+    "img": "/Blog-5.webp",
+    "title": "A Complete Guide to Solo Traveling Safely in 2026",
+    "date": "29 Apr 2026",
+    "author": "James Anderson",
+    "comments": "18 comments"
+  },
+  {
+    "id": 6,
+    "img": "/Blog-6.webp",
+    "title": "Top Cafes Around the World with Stunning Views",
+    "date": "15 May 2026",
+    "author": "Olivia Brown",
+    "comments": "6 comments"
+  },
+  {
+    "id": 7,
+    "img": "/Blog-7.webp",
+    "title": "Essential Packing Tips for Long International Trips",
+    "date": "08 Jun 2026",
+    "author": "Michael Scott",
+    "comments": "9 comments"
+  },
+  {
+    "id": 8,
+    "img": "/Blog-8.webp",
+    "title": "Why Digital Nomads Prefer Southeast Asia for Remote Work",
+    "date": "21 Jul 2026",
+    "author": "Isabella Clark",
+    "comments": "14 comments"
+  }
+]
