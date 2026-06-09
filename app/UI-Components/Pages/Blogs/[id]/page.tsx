@@ -288,7 +288,7 @@ export default function BlogDetails() {
               {TagsData.map((tags, index) => (
                 <Link
                   key={index}
-                  href={`/UI-Components/Pages/Blogs?category=${tags}`}
+                  href={`/UI-Components/Pages/Blogs?tags=${tags}`}
                   className="px-4 py-2 border rounded-md me-2 hover:bg-black hover:text-white transition-all duration-300"
                 >
                   <span className="font-medium">{tags}</span>
