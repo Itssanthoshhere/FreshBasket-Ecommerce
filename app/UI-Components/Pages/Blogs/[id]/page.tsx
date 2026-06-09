@@ -148,7 +148,7 @@ export default function BlogDetails() {
                 {CategoriesData.map((category, index) => (
                   <Link
                     key={index}
-                    href={`/UI-Components/Pages/Blogs?category=${category}"`}
+                    href={`/UI-Components/Pages/Blogs?category=${category}`}
                     className="flex items-center gap-2 mt-2 ps-2 hover:ps-4 transition-all duration-300"
                   >
                     <span className="font-medium hover:text-prim duration-300 transition-colors">
