@@ -5,7 +5,31 @@ import sectionbanner from "@/public/section-banner.png";
 
 import ArticlesData from "@/app/JsonData/BlogsData.json";
 
-export default function Blogs() {
+export default async function Blogs({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const categoryParam = typeof params?.category === "string" ? params.category : undefined;
+  const tagsParam = typeof params?.tags === "string" ? params.tags : undefined;
+
+  const filteredArticles = ArticlesData.filter((blog: any) => {
+    let match = true;
+    if (categoryParam && blog.category !== categoryParam) {
+      match = false;
+    }
+    if (tagsParam) {
+      const tagsArray = tagsParam.split(",");
+      if (!blog.tags) {
+        match = false;
+      } else {
+        match = tagsArray.some((tag: string) => blog.tags.includes(tag));
+      }
+    }
+    return match;
+  });
+
   return (
     <>
       {/* Banner */}
@@ -42,7 +66,7 @@ export default function Blogs() {
 
       <div className="px-2 lg:px-8 xl:px-12 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {ArticlesData.map((blog, index) => (
+          {filteredArticles.map((blog, index) => (
             <div key={index} className="h-full">
               <Link
                 href={`/UI-Components/Pages/Blogs/${blog.id}`}
