@@ -4,8 +4,28 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import products from "@/app/JsonData/TopSelling.json";
+import organicProducts from "@/app/JsonData/OrganicProducts.json";
+import recentlyProducts from "@/app/JsonData/RecentlyProducts.json";
+import topProducts from "@/app/JsonData/TopProducts.json";
+import topSelling from "@/app/JsonData/TopSelling.json";
+import trendingProducts from "@/app/JsonData/TrendingProducts.json";
 import sectionbanner from "@/public/section-banner.png";
+
+const allProducts = [
+  ...organicProducts,
+  ...recentlyProducts,
+  ...topProducts,
+  ...topSelling,
+  ...trendingProducts,
+];
+
+const uniqueProductsMap = new Map();
+allProducts.forEach((product) => {
+  if (!uniqueProductsMap.has(product.id)) {
+    uniqueProductsMap.set(product.id, product);
+  }
+});
+const products = Array.from(uniqueProductsMap.values());
 
 type Props = {
   searchTerm: string;
