@@ -148,7 +148,7 @@ export default function BlogDetails() {
                 {CategoriesData.map((category, index) => (
                   <Link
                     key={index}
-                    href={`/UI-Components/Pages/Blogs?category=${category}"`}
+                    href={`/UI-Components/Pages/Blogs?category=${category}`}
                     className="flex items-center gap-2 mt-2 ps-2 hover:ps-4 transition-all duration-300"
                   >
                     <span className="font-medium hover:text-prim duration-300 transition-colors">
@@ -175,7 +175,7 @@ export default function BlogDetails() {
                 <h2 className="text-2xl mt-7 mb-3 font-medium">Newsletter</h2>
                 <div className="flex justify-between items-center gap-2 w-full md:w-3/4 border-b border-gray-300 pb-2 px-2">
                   <input
-                    type="text"
+                    type="email"
                     placeholder="Enter Your Email..."
                     className="w-full outline-none"
                   />
