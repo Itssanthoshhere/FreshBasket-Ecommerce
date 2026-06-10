@@ -114,7 +114,7 @@ export default function Contact() {
             <h3 className="uppercase font-semibold mb-2 mt-5">STORE ADDRESS</h3>
 
             <p className="text-center text-lg text-black/50 lg:w-[75%] font-medium">
-              The quickest way to know a womanis to go shopping with her
+              The quickest way to know a woman is to go shopping with her
             </p>
           </div>
 
@@ -122,7 +122,7 @@ export default function Contact() {
             <h3 className="uppercase font-semibold mb-2 mt-5">SAVE PAYMENTS</h3>
 
             <p className="text-center text-lg text-black/50 lg:w-[75%] font-medium">
-              Wealth consists not in having greatpossessions but in having few
+              Wealth consists not in having great possessions but in having few
               wants
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function Contact() {
             <h3 className="uppercase font-semibold mb-2 mt-5">24/7 SUPPORT</h3>
 
             <p className="text-center text-black/50 lg:w-[75%] font-medium text-lg">
-              Successful people are always lookingfor opportunities to help
+              Successful people are always looking for opportunities to help
               others.
             </p>
           </div>
